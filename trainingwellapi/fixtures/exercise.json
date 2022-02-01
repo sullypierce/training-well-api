@@ -1,0 +1,31 @@
+[
+    {
+        "model": "trainingwellapi.exercise",
+        "pk": 1,
+        "fields": {
+            "name": "Weighted Pullups",
+            "description": "",
+            "exercise_type_id": 1,
+            "url": "pullup.com"
+        }
+    },
+    {
+        "model": "trainingwellapi.exercise",
+        "pk": 2,
+        "fields": {
+            "name": "One Legged Squats",
+            "description": "",
+            "exercise_type_id": 2,
+            "url": "pistol.com"
+        }
+    },{
+        "model": "trainingwellapi.exercise",
+        "pk": 3,
+        "fields": {
+            "name": "4x4(Boulders)",
+            "description": "",
+            "exercise_type_id": 3,
+            "url": "endurepower.com"
+        }
+    }
+]

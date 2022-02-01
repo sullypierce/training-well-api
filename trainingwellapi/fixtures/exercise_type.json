@@ -1,0 +1,22 @@
+[
+    {
+        "model": "trainingwellapi.exercisetype",
+        "pk": 1,
+        "fields": {
+            "name": "Upper Body"
+        }
+    },
+    {
+        "model": "trainingwellapi.exercisetype",
+        "pk": 2,
+        "fields": {
+            "name": "Lower Body"
+        }
+    },{
+        "model": "trainingwellapi.exercisetype",
+        "pk": 3,
+        "fields": {
+            "name": "On the Wall"
+        }
+    }
+]
