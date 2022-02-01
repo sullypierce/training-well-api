@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
-from trainingwellapi import register_user, login_user
+from trainingwellapi.views import register_user, login_user
 
 urlpatterns = [
     path('register', register_user),
