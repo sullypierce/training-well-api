@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Trainingwell",
+            "database": "${workspaceFolder:trainingwell}/db.sqlite3"
+        }
+    ]
+}

@@ -57,15 +57,17 @@ def register_user(request):
         first_name=req_body['first_name'],
         last_name=req_body['last_name']
     )
-
-    # Now save the extra info in the levelupapi_gamer table
-    gamer = Account.objects.create(
-        is_coach=req_body['is_coach'],
+    coach_bool = False
+    if req_body['is_coach'] == 'true':
+        coach_bool = True
+    # Now save the extra info in the trainingwellapi_account table
+    account = Account.objects.create(
+        is_coach=coach_bool,
         user=new_user
     )
 
     # Commit the user to the database by saving it
-    gamer.save()
+    account.save()
 
     # Use the REST Framework's token generator on the new user account
     token = Token.objects.create(user=new_user)
