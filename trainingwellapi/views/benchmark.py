@@ -126,7 +126,8 @@ class Benchmarks(ViewSet):
         """
         
         #get all benchmarks but add an event_count field
-        benchmarks = Benchmark.objects.all()
+        account = Account.objects.get(user=request.auth.user)
+        benchmarks = Benchmark.objects.filter(account=account)
 
         
 
