@@ -76,6 +76,7 @@ class Benchmarks(ViewSet):
             Response -- Empty body with 204 status code
         """
 
+        account = Account.objects.get(user=request.auth.user) 
         # Do mostly the same thing as POST, but instead of
         # creating a new instance of benchmark, get the benchmark record
         # from the database whose primary key is `pk`
@@ -84,7 +85,7 @@ class Benchmarks(ViewSet):
         # Create a new Python instance of the benchmark class
         # and set its properties from what was sent in the
         # body of the request from the client.
-        benchmark = Benchmark()
+        
         benchmark.notes = request.data["notes"]
         benchmark.reps = request.data["reps"]
         benchmark.weight = request.data["weight"]
@@ -92,6 +93,7 @@ class Benchmarks(ViewSet):
         
         exercise = Exercise.objects.get(pk=request.data['exercise_id'])
         benchmark.exercise = exercise
+        benchmark.account = account
         benchmark.save()
 
         # 204 status code means everything worked but the
