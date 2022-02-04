@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from rest_framework import routers
-from trainingwellapi.views import register_user, login_user, ExerciseTypes, Exercises, Benchmarks, TrainingPlans, Goals, Sessions
+from trainingwellapi.views import register_user, login_user, ExerciseTypes, Exercises, Benchmarks, TrainingPlans, Goals, Sessions, LoggedExercises
 
 
 
@@ -30,6 +30,8 @@ router.register(r'benchmarks', Benchmarks, 'benchmark')
 router.register(r'trainingplans', TrainingPlans, 'training_plan')
 router.register(r'goals', Goals, 'goal')
 router.register(r'sessions', Sessions, 'session')
+router.register(r'loggedexercises', LoggedExercises, 'logged_exercise')
+
 
 urlpatterns = [
     path('', include(router.urls)),

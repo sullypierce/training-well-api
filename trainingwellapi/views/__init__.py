@@ -5,3 +5,4 @@ from .benchmark import Benchmarks
 from .training_plan import TrainingPlans
 from .goals import Goals
 from .session import Sessions
+from .logged_exercise import LoggedExercises
