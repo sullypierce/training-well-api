@@ -1,10 +1,11 @@
+from inspect import Traceback
 import json
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.views.decorators.csrf import csrf_exempt
-from trainingwellapi.models import Account
+from trainingwellapi.models import Account, TrainingPlan
 
 
 @csrf_exempt
@@ -25,11 +26,20 @@ def login_user(request):
         password = req_body['password']
         authenticated_user = authenticate(username=username, password=password)
 
+
         # If authentication was successful, respond with their token
         if authenticated_user is not None:
+            account = Account.objects.get(user=authenticated_user)
+            training_plan = {}
             token = Token.objects.get(user=authenticated_user)
-            data = json.dumps({"valid": True, "token": token.key})
-            return HttpResponse(data, content_type='application/json')
+            try:
+                training_plan = TrainingPlan.objects.get(account = account)
+                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan.id})
+                return HttpResponse(data, content_type='application/json')
+            except Exception as ex:
+                training_plan = {"id": 0}
+                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan["id"]})
+                return HttpResponse(data, content_type='application/json')
 
         else:
             # Bad login details were provided. So we can't log the user in.
