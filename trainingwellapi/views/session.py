@@ -123,13 +123,17 @@ class Sessions(ViewSet):
         """
         
         #get all sessions but add an event_count field
-        sessions = Session.objects.all()
+        if request.data['training_plan_id']:
+            sessions = Session.objects.filter(training_plan_id = request.data['training_plan_id'])
+            serializer = SessionSerializer(
+                sessions, many=True, context={'request': request})
+            return Response(serializer.data)
+        else:
+            sessions = Session.objects.all()
 
-        
-
-        serializer = SessionSerializer(
-            sessions, many=True, context={'request': request})
-        return Response(serializer.data)
+            serializer = SessionSerializer(
+                sessions, many=True, context={'request': request})
+            return Response(serializer.data)
     
 class SessionSerializer(serializers.ModelSerializer):
     """JSON serializer for sessions
