@@ -121,10 +121,9 @@ class Sessions(ViewSet):
         Returns:
             Response -- JSON serialized list of sessions
         """
-        
-        #get all sessions but add an event_count field
-        if request.data['training_plan_id']:
-            sessions = Session.objects.filter(training_plan_id = request.data['training_plan_id'])
+        training_plan_id = request.query_params.get('training_plan_id')
+        if training_plan_id:
+            sessions = Session.objects.filter(training_plan_id = training_plan_id)
             serializer = SessionSerializer(
                 sessions, many=True, context={'request': request})
             return Response(serializer.data)
