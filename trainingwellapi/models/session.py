@@ -1,9 +1,10 @@
 from django.db import models
 from .training_plan import TrainingPlan
+from .account import Account
 
 class Session(models.Model):
 
-    training_plan = models.ForeignKey(TrainingPlan, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
     assigned_date = models.DateField()
     time_completed = models.TimeField(null=True)
     notes = models.CharField(max_length=250)
