@@ -6,7 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from trainingwellapi.models import TrainingPlan, Goal
+from trainingwellapi.models import Account, Goal
 from django.db.models import Count
 
 
@@ -24,8 +24,8 @@ class Goals(ViewSet):
         # and set its properties from what was sent in the
         # body of the request from the client.
         goal = Goal()
-        training_plan = TrainingPlan.objects.get(id=request.data['training_plan_id'])
-        goal.training_plan = training_plan
+        account = Account.objects.get(user=request.auth.user) 
+        goal.account = account
         goal.description = request.data["description"]
         goal.goal_achieved = request.data["goal_achieved"]
         

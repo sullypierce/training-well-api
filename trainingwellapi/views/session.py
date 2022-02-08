@@ -6,7 +6,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from trainingwellapi.models import Session, TrainingPlan, training_plan
+from trainingwellapi.models import Session, Account, training_plan
 from django.db.models import Count
 
 
@@ -25,8 +25,8 @@ class Sessions(ViewSet):
         # and set its properties from what was sent in the
         # body of the request from the client.
         session = Session()
-        training_plan = TrainingPlan.objects.get(id=request.data['training_plan_id'])
-        session.training_plan = training_plan
+        account = Account.objects.get(user=request.auth.user) 
+        session.account = account
         session.assigned_date = request.data["assigned_date"]
         session.time_completed = request.data["time_completed"]
         session.notes = request.data["notes"]
