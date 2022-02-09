@@ -121,15 +121,19 @@ class LoggedExercises(ViewSet):
         Returns:
             Response -- JSON serialized list of logged_exercises
         """
-        
-        #get all logged_exercises but add an event_count field
-        logged_exercises = LoggedExercise.objects.all()
-
-        
-
-        serializer = LoggedExerciseSerializer(
+        #if frontend sends session id query send back only matching exercises
+        session_id = request.query_params.get('session_id')
+        if session_id:
+            logged_exercises = LoggedExercise.objects.filter(session_id=session_id)
+            serializer = LoggedExerciseSerializer(
             logged_exercises, many=True, context={'request': request})
-        return Response(serializer.data)
+            return Response(serializer.data)
+        else:
+        #get all logged_exercises but add an event_count field
+            logged_exercises = LoggedExercise.objects.all()
+            serializer = LoggedExerciseSerializer(
+                logged_exercises, many=True, context={'request': request})
+            return Response(serializer.data)
     
 class LoggedExerciseSerializer(serializers.ModelSerializer):
     """JSON serializer for logged_exercises
