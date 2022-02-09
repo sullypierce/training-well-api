@@ -142,5 +142,5 @@ class SessionSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Session
-        fields = ('id', 'assigned_date', 'time_completed', 'notes', 'sleep_hours', 'energy_level', 'quality', "training_plan")
+        fields = ('id', 'assigned_date', 'time_completed', 'notes', 'sleep_hours', 'energy_level', 'quality', "account")
         

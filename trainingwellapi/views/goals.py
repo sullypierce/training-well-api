@@ -129,6 +129,6 @@ class GoalSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Goal
-        fields = ('id', 'description', 'goal_achieved', 'training_plan')
+        fields = ('id', 'description', 'goal_achieved', 'account')
         depth = 1
         
