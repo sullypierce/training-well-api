@@ -121,14 +121,15 @@ class Sessions(ViewSet):
         Returns:
             Response -- JSON serialized list of sessions
         """
-        training_plan_id = request.query_params.get('training_plan_id')
-        if training_plan_id:
-            sessions = Session.objects.filter(training_plan_id = training_plan_id)
+        account_id = request.query_params.get('account_id')
+        if account_id:
+            sessions = Session.objects.filter(account_id = account_id)
             serializer = SessionSerializer(
                 sessions, many=True, context={'request': request})
             return Response(serializer.data)
         else:
-            sessions = Session.objects.all()
+            account = Account.objects.get(user = request.auth.user)
+            sessions = Session.objects.filter(account =account)
 
             serializer = SessionSerializer(
                 sessions, many=True, context={'request': request})
