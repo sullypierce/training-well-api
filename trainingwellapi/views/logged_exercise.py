@@ -139,6 +139,6 @@ class LoggedExerciseSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = LoggedExercise
-        fields = ('id', 'exercise', 'completed', 'reps', 'sets', 'session', 'notes')
+        fields = ('id', 'exercise', 'completed', 'reps', 'sets', 'session', 'notes', 'weight_used')
         depth = 1
         
