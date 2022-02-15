@@ -123,13 +123,13 @@ class Sessions(ViewSet):
         """
         account_id = request.query_params.get('account_id')
         if account_id:
-            sessions = Session.objects.filter(account_id = account_id)
+            sessions = Session.objects.filter(account_id = account_id).order_by('assigned_date')
             serializer = SessionSerializer(
                 sessions, many=True, context={'request': request})
             return Response(serializer.data)
         else:
             account = Account.objects.get(user = request.auth.user)
-            sessions = Session.objects.filter(account =account)
+            sessions = Session.objects.filter(account =account).order_by('assigned_date')
 
             serializer = SessionSerializer(
                 sessions, many=True, context={'request': request})
