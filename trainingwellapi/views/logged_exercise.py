@@ -27,6 +27,15 @@ class LoggedExercises(ViewSet):
         logged_exercise = LoggedExercise()
         exercise = Exercise.objects.get(id=request.data['exercise_id'])
         session = Session.objects.get(id=request.data['session_id'])
+        
+        #find the order of the last exercise for this session and put the new exercise last in order
+        exercises = LoggedExercise.objects.filter(session = session).order_by('order')
+        try:
+            last_exercise = exercises[len(exercises)-1]
+            logged_exercise.order = last_exercise.order+1
+        except ValueError:
+            logged_exercise.order = 1 
+        
         logged_exercise.notes = request.data["notes"]
         logged_exercise.completed = request.data["completed"]
         logged_exercise.reps = request.data["reps"]
@@ -124,7 +133,7 @@ class LoggedExercises(ViewSet):
         #if frontend sends session id query send back only matching exercises
         session_id = request.query_params.get('session_id')
         if session_id:
-            logged_exercises = LoggedExercise.objects.filter(session_id=session_id)
+            logged_exercises = LoggedExercise.objects.filter(session_id=session_id).order_by('order')
             serializer = LoggedExerciseSerializer(
             logged_exercises, many=True, context={'request': request})
             return Response(serializer.data)
