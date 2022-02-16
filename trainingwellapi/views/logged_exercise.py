@@ -86,21 +86,24 @@ class LoggedExercises(ViewSet):
         Returns:
             Response -- Empty body with 204 status code
         """
-
+        logged_exercise = LoggedExercise.objects.get(pk=pk)
+        
+        move_spot = request.query_params.get('move')
+        if move_spot:
+            LoggedExercise.objects.move(logged_exercise, move_spot)
         # Do mostly the same thing as POST, but instead of
         # creating a new instance of logged_exercise, get the logged_exercise record
         # from the database whose primary key is `pk`
-        logged_exercise = LoggedExercise.objects.get(pk=pk)
         # Create a new Python instance of the logged_exercise class
         # and set its properties from what was sent in the
         # body of the request from the client.
-        
-        logged_exercise.notes = request.data["notes"]
-        logged_exercise.completed = request.data["completed"]
-        logged_exercise.reps = request.data["reps"]
-        logged_exercise.sets = request.data["sets"]
-        logged_exercise.weight_used = request.data["weight_used"]
-        logged_exercise.save()
+        else:
+            logged_exercise.notes = request.data["notes"]
+            logged_exercise.completed = request.data["completed"]
+            logged_exercise.reps = request.data["reps"]
+            logged_exercise.sets = request.data["sets"]
+            logged_exercise.weight_used = request.data["weight_used"]
+            logged_exercise.save()
 
         # 204 status code means everything worked but the
         # server is not sending back any data in the response
@@ -152,6 +155,6 @@ class LoggedExerciseSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = LoggedExercise
-        fields = ('id', 'exercise', 'completed', 'reps', 'sets', 'session', 'notes', 'weight_used')
+        fields = ('id', 'exercise', 'completed', 'reps', 'sets', 'session', 'notes', 'weight_used', 'order')
         depth = 1
         
