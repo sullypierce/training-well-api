@@ -119,7 +119,7 @@ class Exercises(ViewSet):
         """
         
         #get all exercises but add an event_count field
-        exercises = Exercise.objects.all()
+        exercises = Exercise.objects.all().order_by('name')
 
         
 
