@@ -11,3 +11,11 @@ class Session(models.Model):
     sleep_hours = models.IntegerField(null=True)
     energy_level = models.IntegerField(null=True)
     quality = models.IntegerField(null=True)
+    
+    @property
+    def next_scheduled(self):
+        return self.__next_scheduled
+
+    @next_scheduled.setter
+    def next_scheduled(self, value):
+        self.__next_scheduled = value

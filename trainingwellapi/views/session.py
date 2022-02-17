@@ -8,6 +8,7 @@ from rest_framework import serializers
 from rest_framework import status
 from trainingwellapi.models import Session, Account, training_plan
 from django.db.models import Count
+from datetime import date
 
 
 class Sessions(ViewSet):
@@ -124,15 +125,29 @@ class Sessions(ViewSet):
         account_id = request.query_params.get('account_id')
         if account_id:
             sessions = Session.objects.filter(account_id = account_id).order_by('assigned_date')
+            
             serializer = SessionSerializer(
                 sessions, many=True, context={'request': request})
             return Response(serializer.data)
         else:
             account = Account.objects.get(user = request.auth.user)
             sessions = Session.objects.filter(account =account).order_by('assigned_date')
-
+            date_today = date.today()
+            
+            next_session_found = 0
+            def find_next_session(session):
+                nonlocal next_session_found
+                if date_today <= session.assigned_date and next_session_found == 0:
+                    session.next_scheduled = True
+                    next_session_found = 1
+                    print(session.next_scheduled)
+                else:
+                    session.next_scheduled = False
+                return session
+            session_list = map(find_next_session, sessions)
+            
             serializer = SessionSerializer(
-                sessions, many=True, context={'request': request})
+                session_list, many=True, context={'request': request})
             return Response(serializer.data)
     
 class SessionSerializer(serializers.ModelSerializer):
@@ -143,5 +158,5 @@ class SessionSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Session
-        fields = ('id', 'assigned_date', 'time_completed', 'notes', 'sleep_hours', 'energy_level', 'quality', "account")
+        fields = ('id', 'assigned_date', 'time_completed', 'notes', 'sleep_hours', 'energy_level', 'quality', "account", 'next_scheduled')
         
