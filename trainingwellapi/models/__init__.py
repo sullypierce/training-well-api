@@ -6,3 +6,4 @@ from .training_plan import TrainingPlan
 from .goal import Goal
 from .session import Session
 from .logged_exercise import LoggedExercise
+from .coach_connection import CoachConnection

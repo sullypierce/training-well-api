@@ -5,4 +5,4 @@ from django.contrib.auth.models import User
 class Account(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    is_coach = models.BooleanField()
+    is_coach = models.BooleanField(default=False)
