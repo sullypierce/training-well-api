@@ -122,6 +122,8 @@ class Sessions(ViewSet):
         Returns:
             Response -- JSON serialized list of sessions
         """
+        #if the request contains an account id, the server sends back the sessions for that account:
+        #this will be used by coach accounts to acccess their trainees sessions
         account_id = request.query_params.get('account_id')
         if account_id:
             sessions = Session.objects.filter(account_id = account_id).order_by('assigned_date')
@@ -129,11 +131,13 @@ class Sessions(ViewSet):
             serializer = SessionSerializer(
                 sessions, many=True, context={'request': request})
             return Response(serializer.data)
+        #if the request has no query parameters, send back only the sessions for the currently logged in user
         else:
             account = Account.objects.get(user = request.auth.user)
             sessions = Session.objects.filter(account =account).order_by('assigned_date')
             date_today = date.today()
             
+            #this block of logic gets todays date and sets the field next_scheduled to True for the next scheduled session
             next_session_found = 0
             def find_next_session(session):
                 nonlocal next_session_found

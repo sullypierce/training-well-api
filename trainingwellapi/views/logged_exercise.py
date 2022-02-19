@@ -134,7 +134,7 @@ class LoggedExercises(ViewSet):
             Response -- JSON serialized list of logged_exercises
         """
         #if frontend sends session id query send back only matching exercises: 
-        # this will be used for a coach getting their athletes data
+        # this will be used for getting the logged_exercises for a particular session
         session_id = request.query_params.get('session_id')
         if session_id:
             logged_exercises = LoggedExercise.objects.filter(session_id=session_id).order_by('order')
