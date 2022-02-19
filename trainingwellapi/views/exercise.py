@@ -84,7 +84,7 @@ class Exercises(ViewSet):
         exercise.description = request.data["description"]
         exercise.url = request.data["url"]
 
-        
+        #have to get exercisetype to assign the right one 
         exercisetype = ExerciseType.objects.get(pk=request.data["exercise_type_id"])
         exercise.exercise_type = exercisetype
         exercise.save()
