@@ -34,11 +34,11 @@ def login_user(request):
             token = Token.objects.get(user=authenticated_user)
             try:
                 training_plan = TrainingPlan.objects.get(account = account)
-                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan.id})
+                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan.id, 'is_coach': account.is_coach})
                 return HttpResponse(data, content_type='application/json')
             except Exception as ex:
                 training_plan = {"id": 0}
-                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan["id"]})
+                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan["id"], 'is_coach': account.is_coach})
                 return HttpResponse(data, content_type='application/json')
 
         else:
@@ -81,7 +81,7 @@ def register_user(request):
 
     # Use the REST Framework's token generator on the new user account
     token = Token.objects.create(user=new_user)
-
+    new_account = Account.objects.get(user=new_user)
     # Return the token to the client
-    data = json.dumps({"token": token.key})
+    data = json.dumps({"token": token.key, "is_coach": new_account.is_coach})
     return HttpResponse(data, content_type='application/json')
