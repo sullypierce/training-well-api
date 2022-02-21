@@ -91,7 +91,7 @@ class CoachConnections(ViewSet):
             coach_connections = CoachConnection.objects.filter(trainee=account)
             
             serializer = CoachConnectionSerializer(
-                coach_connections, many=False, context={'request': request})
+                coach_connections, many=True, context={'request': request})
             return Response(serializer.data)
     
     
