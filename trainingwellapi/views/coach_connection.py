@@ -82,17 +82,16 @@ class CoachConnections(ViewSet):
         #if the user is a coach send back all the connections where they are a coach
         account = Account.objects.get(user=request.auth.user)
         if account.is_coach:
-            
             coach_connections = CoachConnection.objects.filter(coach=account)
             serializer = CoachConnectionSerializer(
             coach_connections, many=True, context={'request': request})
             return Response(serializer.data)
         #if the user is not a coach, there should only be one connection where the user is a trainee, so just send back that one
         else:
-            coach_connection = CoachConnection.objects.get(trainee=account)
-        
+            coach_connections = CoachConnection.objects.filter(trainee=account)
+            
             serializer = CoachConnectionSerializer(
-                coach_connection, many=False, context={'request': request})
+                coach_connections, many=False, context={'request': request})
             return Response(serializer.data)
     
     
