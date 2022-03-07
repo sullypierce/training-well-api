@@ -8,3 +8,4 @@ from .session import Sessions
 from .logged_exercise import LoggedExercises
 from .coach_connection import CoachConnections
 from .coach import Coachs
+from .chart_data import ChartData
