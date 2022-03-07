@@ -34,11 +34,11 @@ def login_user(request):
             token = Token.objects.get(user=authenticated_user)
             try:
                 training_plan = TrainingPlan.objects.get(account = account)
-                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan.id, 'is_coach': account.is_coach})
+                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan.id, 'is_coach': account.is_coach, "account_name": f'{account.user.first_name} {account.user.last_name}'})
                 return HttpResponse(data, content_type='application/json')
             except Exception as ex:
                 training_plan = {"id": 0}
-                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan["id"], 'is_coach': account.is_coach})
+                data = json.dumps({"valid": True, "token": token.key, "training_plan_id": training_plan["id"], 'is_coach': account.is_coach, "account_name": f'{account.user.first_name} {account.user.last_name}'})
                 return HttpResponse(data, content_type='application/json')
 
         else:
@@ -83,5 +83,5 @@ def register_user(request):
     token = Token.objects.create(user=new_user)
     new_account = Account.objects.get(user=new_user)
     # Return the token to the client
-    data = json.dumps({"token": token.key, "is_coach": new_account.is_coach})
+    data = json.dumps({"token": token.key, "is_coach": new_account.is_coach, "account_name": f'{new_account.user.first_name} {new_account.user.last_name}'})
     return HttpResponse(data, content_type='application/json')
