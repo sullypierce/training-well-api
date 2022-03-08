@@ -9,6 +9,8 @@ from rest_framework import status
 from trainingwellapi.models import Benchmark, Account
 from django.db.models import Count
 
+from trainingwellapi.models.session import Session
+
 
 class ChartData(ViewSet):
 
@@ -35,16 +37,20 @@ class ChartData(ViewSet):
         if data_type == 'benchmarks':
         #get all exercises but add an event_count field
             benckmarks = Benchmark.objects.filter(account = account).order_by('date')
-            benchmark_data = {}
+            response_data = {}
             for benchmark in benckmarks:
-                if benchmark.exercise.name in benchmark_data:
-                    benchmark_data[benchmark.exercise.name].append({"x": benchmark.weight, "y": benchmark.date})
+                if benchmark.exercise.name in response_data:
+                    response_data[benchmark.exercise.name].append({"x": benchmark.weight, "y": benchmark.date})
                 else:
-                    benchmark_data[benchmark.exercise.name] = [{"x": benchmark.weight, "y": benchmark.date}]
-            print(benchmark_data)
-
+                    response_data[benchmark.exercise.name] = [{"x": benchmark.weight, "y": benchmark.date}]
+            
+        if data_type == "recentsessionquality":
+            sessions = Session.objects.filter(account = account)
+            response_data = []
+            for session in sessions:
+                response_data.append({"x":session.assigned_date, "y": session.quality})
         
-        return Response(benchmark_data)
+        return Response(response_data)
     
 # class ExerciseSerializer(serializers.ModelSerializer):
 #     """JSON serializer for exercises
