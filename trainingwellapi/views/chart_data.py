@@ -1,4 +1,6 @@
 """View module for handling requests about games"""
+from datetime import datetime, date, timedelta
+from dateutil.relativedelta import *
 from django.core.exceptions import ValidationError
 from rest_framework import status
 from django.http import HttpResponseServerError
@@ -55,7 +57,10 @@ class ChartData(ViewSet):
         
         
         if data_type == 'sleep':
-            sessions = Session.objects.filter(account = account).exclude(sleep_hours__isnull = True)
+            
+            today = datetime.now()
+            lastmonth = today - relativedelta(months=1)
+            sessions = Session.objects.filter(account = account).filter(assigned_date__gte = lastmonth).exclude(sleep_hours__isnull = True)
             sum = 0
             for session in sessions:
                 sum += session.sleep_hours
