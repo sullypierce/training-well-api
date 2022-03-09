@@ -34,6 +34,8 @@ class ChartData(ViewSet):
     def list(self, request):
         account = Account.objects.get(user=request.auth.user) 
         data_type = request.query_params.get('datatype')
+        
+        
         if data_type == 'benchmarks':
         #get all exercises but add an event_count field
             benckmarks = Benchmark.objects.filter(account = account).order_by('date')
@@ -44,12 +46,20 @@ class ChartData(ViewSet):
                 else:
                     response_data[benchmark.exercise.name] = [{"x": benchmark.weight, "y": benchmark.date}]
             
+            
         if data_type == "recentsessionquality":
             sessions = Session.objects.filter(account = account)
             response_data = []
             for session in sessions:
                 response_data.append({"x":session.assigned_date, "y": session.quality})
         
+        
+        if data_type == 'sleep':
+            sessions = Session.objects.filter(account = account).exclude(sleep_hours__isnull = True)
+            sum = 0
+            for session in sessions:
+                sum += session.sleep_hours
+            response_data = sum / len(sessions)
         return Response(response_data)
     
 # class ExerciseSerializer(serializers.ModelSerializer):
