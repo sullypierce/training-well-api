@@ -73,6 +73,12 @@ class ChartData(ViewSet):
             for session in sessions:
                 response_data.append({"x": {session.sleep_hours}, "y": {session.quality}})
                 
+        if data_type=='qualityvstime':
+            sessions = Session.objects.filter(account = account).exclude(sleep_hours__isnull = True)
+            response_data = []
+            for session in sessions:
+                print(session.time_completed)
+                
         return Response(response_data)
     
 # class ExerciseSerializer(serializers.ModelSerializer):
