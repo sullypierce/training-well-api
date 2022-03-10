@@ -42,6 +42,7 @@ class ChartData(ViewSet):
         #get all exercises but add an event_count field
             benckmarks = Benchmark.objects.filter(account = account).order_by('date')
             response_data = {}
+            
             for benchmark in benckmarks:
                 if benchmark.exercise.name in response_data:
                     response_data[benchmark.exercise.name].append({"x": benchmark.weight, "y": benchmark.date})
@@ -65,6 +66,13 @@ class ChartData(ViewSet):
             for session in sessions:
                 sum += session.sleep_hours
             response_data = sum / len(sessions)
+            
+        if data_type == 'sleepvsquality':
+            sessions = Session.objects.filter(account = account).exclude(sleep_hours__isnull = True)
+            response_data = []
+            for session in sessions:
+                response_data.append({"x": {session.sleep_hours}, "y": {session.quality}})
+                
         return Response(response_data)
     
 # class ExerciseSerializer(serializers.ModelSerializer):
